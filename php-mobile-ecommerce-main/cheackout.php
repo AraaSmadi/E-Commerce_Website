@@ -20,27 +20,22 @@
     if (isset($_POST['checkbtn'])) {
         $state = check($_POST['U-name'], $_POST['email'], $_POST['phone']);
         try {
-
+            
             $id = $_SESSION['userLogin'];
             $sql = "INSERT INTO orders (user_id, order_total_amount,product_quantity, phone_number ,order_address) VALUES
             (:id, :total, :quantity, :phone, :address);";
             $stat = $pdo->prepare($sql);
             $stat->execute([':id' => $id, ':total' => $_SESSION['totel'], ':quantity' => $_SESSION['q'], ':phone' => $_POST['phone'], ':address' => $_POST['Address']]);
-            header("Location:success.php");
+            
             // $sql2 = "ALTER TABLE users_cart  DELETE WHERE user_id = ? ;";
             $sql2 = "DELETE FROM users_cart WHERE user_id = ? ;";
             $statement = $pdo->prepare($sql2);
             $statement->execute([$id]);
+           echo "<script> window.location.href ='success.php'</script>";
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        try {
-            $sql = "SELECT * FROM orders WHERE users.user_id = $id ;";
-            $stat = $pdo->query($sql);
-            $cart = $stat->fetchAll();
-        } catch (PDOException $e) {
-            echo "Faild"  . $e->getMessage() . "<br/>";
-        }
+       
     }
     ?>
     <br><br>
@@ -76,7 +71,7 @@
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3" style="color:  #717ce8;">Billing Details</h4><br>
-                <form class="needs-validation" action="./success.php" method="POST">
+                <form class="needs-validation"  method="POST">
                     <div class="mb-3">
                         <label for="Item">User Name :</label>
                         <input type="text" class="form-control" name="U-name" required value="<?php echo  $orders['user_name'] ?>">
