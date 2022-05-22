@@ -1,52 +1,47 @@
-<?php require 'config.php';
-session_start(); ?>
-<!doctype html>
-<html lang="en">
 
-<head>
-    <title>checkout</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
 
-<body>
     <?php
+    require_once ("./header.php");
+ 
     try {
-        $stat = $con->prepare("SELECT * FROM users  JOIN users_cart WHERE users.user_id = 2 ;");
-        $stat->execute();
+        $id = $_SESSION['userLogin'];
+        // $user = $_SESSION['userLogin'];
+        $query = "SELECT * FROM users JOIN users_cart ON users.user_id = users_cart.user_id WHERE users.user_id = $id;";
+        // $query = "SELECT * FROM users WHERE user_id = 11;";
+        $stat = $pdo->query($query);
+        // $stat->execute([$user]);
         $orders = $stat->fetch();
+        // print_r($orders);
     } catch (PDOException $err) {
         echo $err->getMessage();
     }
-    $id = 2;
 
     if (isset($_POST['checkbtn'])) {
-        $state = check($_POST['U-name'],  $_POST['email'], $_POST['phone']);
+        $state = check($_POST['U-name'], $_POST['email'], $_POST['phone']);
         try {
-            $sql = "INSERT INTO orders (user_id, order_total_amount,product_quantity,  phone_number ,order_address) VALUES
-            (:id ,:total,:quantity,:phone , :address);";
-            $stat = $con->prepare($sql);
+
+            $id = $_SESSION['userLogin'];
+            $sql = "INSERT INTO orders (user_id, order_total_amount,product_quantity, phone_number ,order_address) VALUES
+            (:id, :total, :quantity, :phone, :address);";
+            $stat = $pdo->prepare($sql);
             $stat->execute([':id' => $id, ':total' => $_SESSION['totel'], ':quantity' => $_SESSION['q'], ':phone' => $_POST['phone'], ':address' => $_POST['Address']]);
             header("Location:success.php");
-            $sql2 = "TRUNCATE TABLE users_cart";
-            $statement = $con->prepare($sql2);
-            $statement->execute();
+            // $sql2 = "ALTER TABLE users_cart  DELETE WHERE user_id = ? ;";
+            $sql2 = "DELETE FROM users_cart WHERE user_id = ? ;";
+            $statement = $pdo->prepare($sql2);
+            $statement->execute([$id]);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
         try {
-            $sql = "SELECT * FROM orders WHERE users.user_id = 2 ;";
-            $stat = $con->query($sql);
+            $sql = "SELECT * FROM orders WHERE users.user_id = $id ;";
+            $stat = $pdo->query($sql);
             $cart = $stat->fetchAll();
         } catch (PDOException $e) {
             echo "Faild"  . $e->getMessage() . "<br/>";
         }
     }
-   
     ?>
     <br><br>
     <div class="container">
@@ -81,7 +76,7 @@ session_start(); ?>
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3" style="color:  #717ce8;">Billing Details</h4><br>
-                <form class="needs-validation" method="POST">
+                <form class="needs-validation" action="./success.php" method="POST">
                     <div class="mb-3">
                         <label for="Item">User Name :</label>
                         <input type="text" class="form-control" name="U-name" required value="<?php echo  $orders['user_name'] ?>">
@@ -112,7 +107,7 @@ session_start(); ?>
                         </div>
                     </div>
                     <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" name="checkbtn" value="submit" style="background-color:  #717ce8;  color: white; border: none; ">Continue to checkout</button>
+                    <input class="btn btn-primary btn-lg btn-block" type="submit" name="checkbtn" value="Continue to checkout" style="background-color:  #717ce8;  color: white; border: none; ">
                 </form>
             </div>
         </div>
@@ -150,11 +145,6 @@ session_start(); ?>
         return $state;
     }
     ?>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
-
-</html>
+<?php require './footer.php';
+?>
+    
