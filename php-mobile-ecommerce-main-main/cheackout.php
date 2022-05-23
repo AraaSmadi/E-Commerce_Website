@@ -1,6 +1,7 @@
-<?php
-    require_once ("./header.php");
 
+     <?php
+    require_once ("./header.php");
+ 
     try {
         $id = $_SESSION['userLogin'];
         // $user = $_SESSION['userLogin'];
@@ -12,9 +13,9 @@
         // print_r($orders);
     } catch (PDOException $err) {
         echo $err->getMessage();
-    } 
+    }
+
     if (isset($_POST['checkbtn'])) {
-        
         $state = check($_POST['U-name'], $_POST['email'], $_POST['phone']);
         try {
             
@@ -23,14 +24,16 @@
             (:id, :total, :quantity, :phone, :address);";
             $stat = $pdo->prepare($sql);
             $stat->execute([':id' => $id, ':total' => $_SESSION['totel'], ':quantity' => $_SESSION['q'], ':phone' => $_POST['phone'], ':address' => $_POST['Address']]);
+            
             // $sql2 = "ALTER TABLE users_cart  DELETE WHERE user_id = ? ;";
             $sql2 = "DELETE FROM users_cart WHERE user_id = ? ;";
             $statement = $pdo->prepare($sql2);
             $statement->execute([$id]);
-            echo "<script> window.location.href ='success.php'</script>";
+           echo "<script> window.location.href ='success.php'</script>";
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+       
     }
     ?>
     <br><br>
