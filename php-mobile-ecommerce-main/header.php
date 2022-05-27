@@ -34,19 +34,23 @@ if (isset($_GET['status']) && $_GET['status'] == 'logout') {
 // }
 
 // For Add To Cart
-if (isset($_GET["action"]) && $_GET["action"] == "add_to_cart") {
+if (isset($_SESSION['userLogin']) && isset($_POST["action"]) && $_POST["action"] == "add_to_cart") {
 
-  $userCart_id = $_GET['ucid'];
-  $prodcutCart_id = $_GET['pcid'];
-  $prodcutQuantity = $_GET['quantity'];
-  $sub_total = $_GET['price'];
-  $Product_image = $_GET['image'];
-  $Product_name = $_GET['name'];
+  $userCart_id = $_POST['ucid'];
+  $prodcutCart_id = $_POST['pcid'];
+  $prodcutQuantity = $_POST['quantity'];
+  $sub_total = $_POST['price'];
+  $Product_image = $_POST['image'];
+  $Product_name = $_POST['name'];
   $insertIntoCart = "INSERT INTO users_cart (user_id, product_id, quantity, sub_total, Product_image, Product_name) VALUES (?,?,?,?,?,?)";
   $stmt = $pdo->prepare($insertIntoCart);
   $stmt->execute([$userCart_id, $prodcutCart_id, $prodcutQuantity, $sub_total, $Product_image, $Product_name]);
-  header('location:index.php');
+  // header('location:index.php');
 
+}
+else if (!isset($_SESSION['userLogin']) && isset($_POST['addlog']) && $_POST['addlog'] == 'addalert') {
+    //  header('location:login.php?addlog=addalert');
+    echo "<script> window.location.href ='login.php?addlog=addalert'</script>";
 }
 
 ?>
@@ -76,7 +80,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "add_to_cart") {
   <!-- Required meta tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link rel="icon" href="img/favicon.png" type="image/png" />
+  <link rel="icon" href="./image/logo2.png" type="image/png" />
   <title>Eiser ecommerce</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="./css/bootstraps.css" />
@@ -100,10 +104,10 @@ if (isset($_GET["action"]) && $_GET["action"] == "add_to_cart") {
   scroll-behavior: smooth;
 }
 body {
-  background-color: #f8f9fa;
+  background-color: transparent;
 }
 header { 
-  background-color: #eaedfe;
+  background-color: transparent;
 }
   .header_area{
       
@@ -143,6 +147,36 @@ header {
     .cont {
       display: flex;
     }
+
+    .single-product .product-img .p_icon form button {
+  display: inline-block;
+  height: 36px;
+  line-height: 40px;
+  width: 36px;
+  text-align: center;
+  background: #fff;
+  border-color: transparent;
+  border-radius: 30px;
+  color: #2a2a2a;
+  /* margin-right: 25px; */
+}
+.single-product .product-img .p_icon button:hover {
+  color: #fff;
+  background: #707bfb;
+}
+.banner_single {
+  min-height: 100px;
+}
+.banner_area .banner_inner {
+    min-height: 100px;
+    background: #f6f6f6;
+}
+.section_gap {
+  padding : 0 ;
+}
+.banner_area .banner_inner .banner_content .page_link a:hover {
+  color: #737efb;
+}
 
     @media (max-width:500px) {
       .cont {
@@ -184,7 +218,7 @@ header {
           <!-- Brand and toggle get grouped for better mobile display -->
           <a class="navbar-brand logo_h" href="./index.php">
               
-            <img src="./image/logo2.png" style=" width: 90px ;" alt="" />
+            <img src="./image/logof.png" style=" width: 100px ;" alt="" />
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -197,10 +231,10 @@ header {
               <div class="col-lg-7 pr-0 ">
                 <ul class="nav navbar-nav d-flex justify-content-end align-items-center ">
                   <li class="nav-item active">
-                    <a class="nav-link  " href="index.php">Home</a>
+                    <a class="nav-link  text-primary " href="index.php">Home</a>
                   </li>
                   <li class="nav-item ">
-                    <a class="nav-link  " href="./about.php">About </a>
+                    <a class="nav-link  text-primary" href="./about.php">About </a>
                   </li>
                   <!-- <li class="nav-item ">
                     <a class="nav-link  " href="index.php">Contact </a>
@@ -208,7 +242,7 @@ header {
                   
                   <li class="nav-item submenu dropdown">
 
-                    <a href="category.php" class="nav-link dropdown-toggle " id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <a href="category.php" class="nav-link dropdown-toggle text-primary" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                     <ul class="dropdown-menu rounded-3 border border-primary" aria-labelledby="navbarDropdown">
                       <li class="dropdown-item">
                         <a class="nav-link" href="category.php">All Categories</a>
@@ -223,7 +257,7 @@ header {
                         $category_name = $category1['category_name'];
                       ?>
                         <li class=" dropdown-item">
-                          <a class="nav-link" href="<?php echo strtolower($category_name) ?>.php?c_id=<?php echo $category_id; ?>"><?php echo $category_name ?></a>
+                          <a class="nav-link" href="individual_category.php?c_id=<?php echo $category_id; ?>"><?php echo $category_name ?></a>
                         </li>
                         <!-- <li><hr class="dropdown-divider"></li> -->
                       <?php } ?>
@@ -233,18 +267,18 @@ header {
                   <?php
                   if (isset($_SESSION['userLogin']) || isset($_SESSION['adminLogin'])) { ?>
                     <li class="nav-item">
-                      <a class="nav-link mylink  " href="index.php?status=logout">Logout</a>
+                      <a class="nav-link mylink  text-primary" href="index.php?status=logout">Logout</a>
                     </li>
                   <?php
                   } else { ?>
                     <li class="nav-item">
-                      <a class="nav-link mylink  " href="login.php">Login</a>
+                      <a class="nav-link mylink  text-primary" href="login.php">Login</a>
                     </li>
                   <?php } ?>
                   <?php
                   if (isset($_SESSION['adminLogin'])) { ?>
                     <li class="nav-item">
-                      <a class="nav-link  " href="./admin/index.php">Admin</a>
+                      <a class="nav-link  text-primary" href="./admin/index.php">Admin</a>
                     </li>
                   <?php } ?>
                 </ul>
@@ -256,7 +290,7 @@ header {
                     <form action="./search.php" method="POST">
                         <div class="input-group ">
                             <input type="text" name="search" placeholder="Search For Product" class="form-control" aria-label="Search For Product" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary" type="submit" name="submit" id="button-addon2"><i  class="fa fa-search text-white" aria-hidden="true" ></i></button>
+                            <button class="btn  btn-primary" type="submit" name="submit" id="button-addon2"><i  class="fa fa-search text-white" aria-hidden="true" ></i></button>
                         </div>
                       <!-- <input class="px-2 py-1 searchTerm" name="search" type="text" placeholder="SEARCH">
                       <button class="myBtn" type="submit" name="submit" class="searchButton">
@@ -277,13 +311,15 @@ header {
                                                         }
                                                         ?>
                         </span>
-                        <i class="fa fa-shopping-cart " style="font-size:1.5em; color :#707bfb;"></i>
+                        <?php if (isset($_SESSION['userLogin'])) { ?>
+                        <i class="fa fa-shopping-cart text-primary" style="font-size:1.5em; color :#707bfb;"></i>
+                        <?php } ?>
                       </a>
                     </li>
                     <?php if (isset($_SESSION['userLogin'])) { ?>
                     <li class="nav-item" style="padding-top: 3px;">
                       <a href="./profile.php" class="icons">
-                        <i class="fa-solid fa-user mx-2" style="font-size:1.5em; color :#707bfb;"></i>
+                        <i class="fa-solid fa-user mx-2 text-primary" style="font-size:1.5em; color :#707bfb;"></i>
                       </a>
                     </li>
                   <?php } ?>

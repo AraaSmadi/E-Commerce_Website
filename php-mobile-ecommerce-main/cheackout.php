@@ -1,36 +1,58 @@
-<?php
+
+ <?php
     require_once ("./header.php");
 
-    try {
         $id = $_SESSION['userLogin'];
-        // $user = $_SESSION['userLogin'];
-        $query = "SELECT * FROM users JOIN users_cart ON users.user_id = users_cart.user_id WHERE users.user_id = $id;";
-        // $query = "SELECT * FROM users WHERE user_id = 11;";
-        $stat = $pdo->query($query);
-        // $stat->execute([$user]);
-        $orders = $stat->fetch();
-        // print_r($orders);
-    } catch (PDOException $err) {
-        echo $err->getMessage();
-    } 
-    if (isset($_POST['checkbtn'])) {
-        
-        $state = check($_POST['U-name'], $_POST['email'], $_POST['phone']);
+        if($id == null)
+        {
+            echo '    <div class="container-fluid  mt-100">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Cart</h5>
+                        </div>
+                        <div class="card-body cart">
+                            <div class="col-sm-12 empty-cart-cls text-center">
+                                <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                                <h3><strong>Your Cart is Empty</strong></h3>
+                                <h4>Add something to make me happy :)</h4>
+                                <a href="category.php" class="btn btn-primary cart-btn-transform m-3" data-abc="true" style="background-color: #717ce8;">continue shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>';
+        }else {
         try {
-            
+            $stat = $pdo->prepare("SELECT * FROM users  WHERE user_id = $id ;");
+            $stat->execute();
+            $orders = $stat->fetch();
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+
+    if (isset($_POST['checkbtn'])) {
+
+        try {
             $id = $_SESSION['userLogin'];
             $sql = "INSERT INTO orders (user_id, order_total_amount,product_quantity, phone_number ,order_address) VALUES
             (:id, :total, :quantity, :phone, :address);";
             $stat = $pdo->prepare($sql);
             $stat->execute([':id' => $id, ':total' => $_SESSION['totel'], ':quantity' => $_SESSION['q'], ':phone' => $_POST['phone'], ':address' => $_POST['Address']]);
-            // $sql2 = "ALTER TABLE users_cart  DELETE WHERE user_id = ? ;";
             $sql2 = "DELETE FROM users_cart WHERE user_id = ? ;";
             $statement = $pdo->prepare($sql2);
             $statement->execute([$id]);
             echo "<script> window.location.href ='success.php'</script>";
+            // header("Location: success.php");
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
+        $_POST['U-name']= null ;
+            $_POST['email']=null;
+            $_POST['phone'] = null ;
+            $_POST['Address'] = null ;
     }
     ?>
     <br><br>
@@ -66,7 +88,7 @@
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3" style="color:  #717ce8;">Billing Details</h4><br>
-                <form class="needs-validation"  method="POST">
+                <form class="needs-validation" method="POST">
                     <div class="mb-3">
                         <label for="Item">User Name :</label>
                         <input type="text" class="form-control" name="U-name" required value="<?php echo  $orders['user_name'] ?>">
@@ -76,7 +98,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="Image">Email :</label>
-                        <input type="text" class="form-control" name="email" required value="<?php echo  $orders['user_email'] ?>">
+                        <input type="text" class="form-control" name="email" required value="<?php echo  $orders['user_email'] ?>"disabled>
                         <span class="error" style="color:red;"><?php echo $errors[1] ?? "" ?></span>
                     </div>
                     <div class="mb-3">
@@ -85,7 +107,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="Image">Phone :</label>
-                        <input type="text" class="form-control" name="phone" required value="<?php echo  $orders['user_phone'] ?>">
+                        <input type="text" class="form-control" name="phone" required value="<?php echo  $orders['user_phone'] ?>" >
                         <span class="error" style="color:red;"><?php echo $errors[2] ?? "" ?></span>
                     </div>
                     <hr class="mb-4">
@@ -134,6 +156,5 @@
         }
         return $state;
     }
-    ?>
-<?php require './footer.php';
-?>
+}?>
+<?php require './footer.php';?>

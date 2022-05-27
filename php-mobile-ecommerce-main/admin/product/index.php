@@ -4,9 +4,9 @@ include('../../connection/conn.php');
 include_once('../../headfoot/header.php');
 
 
-$statment = $pdo->prepare("SELECT * FROM `products`");
+$statment = $pdo->prepare("SELECT * FROM products JOIN categories ON products.category_id = categories.category_id");
 $statment->execute();
-$products = $statment->fetchAll(PDO::FETCH_ASSOC);
+// $products = $statment->fetchAll(PDO::FETCH_ASSOC);
 
 
 
@@ -46,19 +46,15 @@ $products = $statment->fetchAll(PDO::FETCH_ASSOC);
     <div class="row row-cols-1 row-cols-md-2 g-4"
       style="display: grid; grid-template-columns: auto auto auto auto; gap: 20px; margin-left: 5px; width: 99%">
 
-      <?php foreach($products as $i => $product): ?>
+      <?php while ($product = $statment->fetch()){ ?>
       <div class="col">
         <div class="card">
-          <img src="<?php echo $product['product_m_img']; ?>" class="card-img-top" style="width: 150px; height: 150px; display: block; margin-left: auto; margin-right: auto;">
+          <img src="./images/<?php echo $product['product_m_img']; ?>" class="card-img-top" style="width: 150px; height: 150px; display: block; margin-left: auto; margin-right: auto;">
           <div class="card-body">
             <h5 class="card-title"><?php echo $product['product_name']?></h5>
             <h6 class="card-title"><?php echo $product['product_price']?></h6>
-            <h6 class="card-title"><?php $stat='SELECT * FROM categories';
-                                                $cat=$pdo->query($stat);
-                                                $share=$cat->fetchAll();
-                                                $share_name = $share[0] ['category_name'];
-                                                echo $share_name;?></h6>
-            <p class="card-text"><?php echo $product['product_description']?></p>
+            <h6 class="card-title"><?php echo $product['category_name'] ?></h6>
+            <p class="card-text"><?php echo substr($product['product_description'],0,20) ?></p>
 
             <form style="display: inline-block" method="post" action="./delete.php">
               <input type="hidden" name="id" value="<?php echo $product['product_id']; ?>">
@@ -69,7 +65,7 @@ $products = $statment->fetchAll(PDO::FETCH_ASSOC);
           </div>
         </div>
       </div>
-      <?php endforeach ?>
+      <?php } ?>
     </div>
   </section>
   <!-- Optional JavaScript -->

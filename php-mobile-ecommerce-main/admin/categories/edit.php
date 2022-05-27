@@ -91,7 +91,7 @@ function randomString($n) {
         <form method="post" style="margin-left: 2%; margin-right: 2%" enctype="multipart/form-data">
 
             <?php if ($categories[0]['category_img']): ?>
-            <img src="<?php echo $categories[0]['category_img']; ?>" style="width: 150px; height: 150px; display: block;">
+            <img src="./images/<?php echo $categories[0]['category_img']; ?>" style="width: 150px; height: 150px; display: block;">
             <?php endif ?>
 
             <div class="form-group">

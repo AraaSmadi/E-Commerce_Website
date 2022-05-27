@@ -12,7 +12,7 @@ try{
 	$imagePath = $_POST["userimage"] ;
 	if ($image && $image['tmp_name']) {
 		$imagePath = 'IMG-' . uniqid() . "-" . $image['name'];
-		move_uploaded_file($image['tmp_name'], "image/" . $imagePath);
+		move_uploaded_file($image['tmp_name'], "admin/users/images/" . $imagePath);
 	}
 }
 

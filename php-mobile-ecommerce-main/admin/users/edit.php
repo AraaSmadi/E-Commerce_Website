@@ -38,7 +38,7 @@ $users = $statment->fetchAll(PDO::FETCH_ASSOC);
         function imagePath()
         {
             global $imagePath;
-            $image = $_FILES['image'] ?? null;
+            $image = $_FILES['user_img'] ?? null;
             
             $imagePath = $_POST["path"] ;
             if ($image && $image['tmp_name']) {
@@ -47,7 +47,7 @@ $users = $statment->fetchAll(PDO::FETCH_ASSOC);
             }
         }
         imagePath();
-           
+          
     $statment = $pdo->prepare ("UPDATE `users` SET `user_name` = :user_name, 
                                `user_email` = :user_email, 
                                `user_img`= :image, `user_password`= :user_password, `user_address` = :user_address , `user_phone` = :user_phone WHERE user_id = :id");
@@ -105,7 +105,7 @@ function randomString($n) {
     <form method="post" style="margin-left: 2%; margin-right: 2%" enctype="multipart/form-data">
 
     <?php if ($users[0]['user_img']): ?>
-          <img src="<?php echo $users[0]['user_img']; ?>" style="width: 150px; height: 150px; display: block;">
+          <img src="./images/<?php echo $users[0]['user_img']; ?>" style="width: 150px; height: 150px; display: block;">
       <?php endif ?>
       <div class="form-group">
         <label>user Image</label>

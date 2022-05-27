@@ -15,9 +15,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $image = $_FILES['category_img'] ?? null;
     $imagePath = '';
     if ($image) {
-        $imagePath = 'images/' . randomString(8) . $image['name'];
-        
-        move_uploaded_file($image['tmp_name'], $imagePath);
+        $imagePath = 'IMG-' . randomString(8) . $image['name'];
+        move_uploaded_file($image['tmp_name'], "images/" . $imagePath);
+        // move_uploaded_file($image['tmp_name'], $imagePath);
     }
     
 

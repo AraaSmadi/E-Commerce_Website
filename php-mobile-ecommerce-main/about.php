@@ -20,7 +20,7 @@ include("./header.php");
     <div class="row align-items-center mb-5">
       <div class="col-lg-6 order-2 order-lg-1"><i class="fa fa-bar-chart fa-2x mb-3 text-primary"></i>
         <h2 class="font-weight-light"><span style = "color: #707bfb;">SMART</span> FOR TABLETS</h2>
-        <p class="font-italic text-muted mb-4">BCI Mobile was established with a singular objective: to offer cutting edge mobile technologies to all consumer segments, making sure that we fulfill the often-ignored promise of an unparalleled customer experience.</p><a href="#" class="btn btn-light px-5 rounded-pill shadow-sm">Learn More</a>
+        <p class="font-italic text-muted mb-4">SMART Mobile was established with a singular objective: to offer cutting edge mobile technologies to all consumer segments, making sure that we fulfill the often-ignored promise of an unparalleled customer experience.</p><a href="#" class="btn btn-light px-5 rounded-pill shadow-sm">Learn More</a>
       </div>
       <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2"><img src="./image/blackview_tab_10_pro.png" alt="" class="img-fluid mb-4 mb-lg-0"></div>
     </div>

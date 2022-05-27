@@ -47,7 +47,7 @@ $categories = $statment->fetchAll(PDO::FETCH_ASSOC);
       <?php foreach($categories as $i => $categorie): ?>
       <div class="col">
         <div class="card">
-          <img src="<?php echo $categorie['category_img']; ?>" class="card-img-top" style="width: 150px; height: 150px; display: block; margin-left: auto; margin-right: auto;">
+          <img src="./images/<?php echo $categorie['category_img']; ?>" class="card-img-top" style="width: 150px; height: 150px; display: block; margin-left: auto; margin-right: auto;">
           <div class="card-body">
             <h5 class="card-title"><?php echo $categorie['category_name']?></h5>
             

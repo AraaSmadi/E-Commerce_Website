@@ -24,7 +24,7 @@ require_once("./header.php");
 ?>
 
 <!--================Home Banner Area =================-->
-<section class="banner_area">
+<section class="banner_area banner_single">
   <div class="banner_inner d-flex align-items-center">
     <div class="container">
       <div class="banner_content d-md-flex justify-content-between align-items-center">
@@ -77,7 +77,7 @@ if (!$stmt->execute([$p_id])) {
                   $product_price = $product['product_price'];
                   // $product_price_on_sale = $product['product_price_on_sale'];
                   // $sale_status = $product['sale_status'];
-                  $product_size = $product['product_sizes'];
+                  $product_color = $product['product_colors'];
                 ?>
                   <!-- <img class="img-responsive" width="100%" src="./logo.jpg" alt="" /> -->
                   <!-- <img class="img-responsive" width="100%" src="image/<?php echo $product_m_img ?>" alt="" /> -->
@@ -91,7 +91,7 @@ if (!$stmt->execute([$p_id])) {
             </ol>
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img class="d-block w-100" src="./image/<?php echo $product_m_img; ?>"  alt="First slide" />
+                <img class="d-block w-100" src="./admin/product/images/<?php echo $product_m_img; ?>"  alt="First slide" />
                 <!-- <img class="d-block w-100" src="image/<?php echo $product_m_img  ?>" alt="First slide" /> -->
               </div>
               <!-- <div class="carousel-item">
@@ -147,15 +147,16 @@ if (!$stmt->execute([$p_id])) {
           <p>
             <?php echo $product_description ?>
           </p>
-          <form action="" method="get">
+          <form action="" method="POST">
             <div class="product_count">
               <label for="sst"  style="color:#707bfb;fontsize">Quantity:</label><br />
-              <input type="number" name="quantity"  id="sst" min="1" value="1" title="Quantity:" class="form-control" />
+              <input type="number" name="quantity"  id="sst" min="1" value="1" title="Quantity:" class="form-control" style = "width: 165px"/>
               <input type="hidden" name="pcid" value="<?php echo $product_id; ?>">
               <input type="hidden" name="ucid" value="<?php echo $_SESSION['userLogin'] ?>">
               <input type="hidden" name="image" value="<?php echo $product_m_img ?>">
               <input type="hidden" name="name" value="<?php echo $product_name ?>">
-              <input type="hidden" name="price" value="<?php echo $product_price = $product['product_price'] ?>">
+              <input type="hidden" name="price" value="<?php echo $product_price = $product['product_price'] ?>" >
+              <input type="hidden" name="addlog" value="addalert" >
                <!-- <a href="index.php?action=add_to_cart&page=index&quantity=1&size=25&pcid=<?php echo $product_id; ?>&ucid=<?php echo $_SESSION['userLogin'] ?>&image=<?php echo $product_img ?>&name=<?php echo $product_name ?>&price=<?php echo $product_price ?>"> -->
               <input type="hidden" name="action" value="add_to_cart">
 
@@ -168,14 +169,14 @@ if (!$stmt->execute([$p_id])) {
             </div>
             <br>
             <input type="hidden" name="id" value="<?php echo $p_id ?>">
-            <label for ="size" style="color:#707bfb;fontsize">Size</lable>
-            <select name="size" id ="size" class="form-select w-50 mr-3 text-dark" aria-label="Default select example">
+            <label for ="size" style="color:#707bfb;fontsize">Color</lable>
+            <select name="size" id ="size" class="form-select mr-3 text-dark" aria-label="Default select example">
 
 
               <?php
 
-                  $sizes =   explode(',', $product_size);
-                  foreach ($sizes as $key => $value) {
+                  $colors =   explode(',', $product_color);
+                  foreach ($colors as $key => $value) {
 
               ?>
                 <option  value="<?php echo $value; ?>" ><?php echo $value; ?> </option>
@@ -186,7 +187,33 @@ if (!$stmt->execute([$p_id])) {
             </select>
             
             <div class="card_area">
-              <button class="myBtn" type="submit"><a class="main_btn my-3">Add to cart</a></button>
+              <button class="myBtn" type="submit" value="addalert"><a class="main_btn my-3" >Add to cart</a></button>
+
+              <?php  if (!isset($_SESSION['userLogin']) && isset($_GET['addlog']) && $_GET['addlog'] == 'addalert') { ?>
+  
+  
+  <div class="modal fade" id="discountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-body text-center">
+<div class="icon text-danger">
+<img src="image/grunge-limited.png" width="50%">
+</div>
+<div class="notice">
+<h4>Get 20% Discount</h4>
+<p>For the next 24 hours you can get any product at half-price.</p>
+
+<p>Use promo code 20-OFF at checkout.</p>
+</div>
+<div class="code" style="font-size: 19px;" >promo code :<span style="color:brown;" >  smart100</span></div><br><br>
+</div>
+
+</div>
+</div>
+</div>
+
+<?php } ?>
+              
             </div>
           </form>
         </div>
@@ -216,7 +243,7 @@ if (!$stmt->execute([$p_id])) {
           <?php echo $product_description; ?>
         </p>
       </div>
-      <?php
+      <!-- <?php
 
       $sqlJoinComments = "SELECT * FROM comments INNER JOIN users 
               ON comments.user_id = users.user_id ";
@@ -232,7 +259,7 @@ if (!$stmt->execute([$p_id])) {
         $comment_content = $comment['comment_content'];
         $user_name = $comment['user_name'];
         $user_img = $comment['user_img'];
-      } ?>
+      } ?> -->
       <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
         <div class="row">
           <div class="col-lg-6">
@@ -258,7 +285,7 @@ if (!$stmt->execute([$p_id])) {
                 <div class="review_item">
                   <div class="media">
                     <div class="d-inline mr-3">
-                      <img width="75px" class="rounded-circle" src="image/<?php echo $user_img; ?>" alt="" />
+                      <img width="75px" class="rounded-circle" src="./admin/users/images/<?php echo $user_img; ?>" alt="" />
                     </div>
                     <div class="media-body">
                       <h4><?php echo $user_name ?></h4>

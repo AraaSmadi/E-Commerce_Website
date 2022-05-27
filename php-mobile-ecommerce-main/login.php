@@ -14,6 +14,7 @@
 session_start();
 
 
+
 $imagePath = "";
 $errors = [];
 // Validation Function
@@ -159,8 +160,9 @@ if (isset($_POST['loginSubmit'])) {
 	<meta charset="UTF-8">
 	<title>Login | Page</title>
 	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+	<link rel="icon" href="./image/logo2.png" type="image/png" />
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<link rel="stylesheet" href="./css/loginss.css">
+	<link rel="stylesheet" href="./css/login.css">
 </head>
 
 <body>
@@ -169,15 +171,24 @@ if (isset($_POST['loginSubmit'])) {
 
 	
 	<header>
-        <a href="#" class="logo"><img src="./image/logo2.png" style=" width: 100px ;" alt="" /></a>
+        <a href="./index.php" class="logo"><img src="./image/logof.png" style=" width: 100px ;" alt="" /></a>
         <nav class="navbar">
             <ul>
                 <li><a href="./index.php">Home</a></li>
+                <li><a href="./category.php">Shop</a></li>
                 <li><a href="about.php">About</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="about.php">Contact</a></li>
             </ul>
         </nav>
     </header>
+
+	<!-- If the user add to cart without login -->
+	<?php if (!isset($_SESSION['userLogin']) && isset($_GET['addlog']) && $_GET['addlog'] == 'addalert') { ?>
+    <div style ="width: 370px ; padding: 10px; margin: 20px auto; color:#9966ff; background-color :#eaedfe; font-size : 2em; text-align: center; border-radius: 10px" >
+      You Have to Login, To purchase the products !
+    </div>
+  <?php } ?>
+
 	<section>
 		<div class="main">
 			<input type="checkbox" id="chk" aria-hidden="true">

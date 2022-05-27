@@ -19,7 +19,7 @@ $stmt->execute();
 
           ?>
             <li>
-              <a href="<?php echo strtolower($category_name) ?>.php?c_id=<?php echo $category_id  ?>"><?php echo $category_name ?></a>
+              <a href="individual_category.php?c_id=<?php echo $category_id  ?>"><?php echo $category_name ?></a>
             </li>
           <?php } ?>
         </ul>

@@ -26,7 +26,10 @@ $stat='SELECT * FROM categories';
       // echo '<pre>';
       // var_dump($share);
       // echo '<pre>';
-
+      //  foreach ($share as $value) { 
+      //    echo $value['category_id']."<br/>";
+      // // <option value= "echo $value['category_id']" > echo $value['category_name'] </option>;
+      //  }
 
 
 
@@ -63,7 +66,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     }
     imagePath();
     
-    
+    $category_id = $_POST['categories'];
+    // echo $category_id;
+
     $statment = $pdo->prepare("UPDATE `products` SET `product_name` = :product_name, 
                                       `product_description` = :product_description, 
                                       `product_m_img`= :image, `product_price`= :product_price, `category_id` =:category_id WHERE product_id = :id");
@@ -118,7 +123,7 @@ function randomString($n) {
     <form method="post" action ="#" style="margin-left: 2%; margin-right: 2%" enctype="multipart/form-data">
 
       <?php if ($products[0]['product_m_img']): ?>
-          <img src="<?php echo $products[0]['product_m_img']; ?>" style="width: 150px; height: 150px; display: block;">
+          <img src="./images/<?php echo $products[0]['product_m_img']; ?>" style="width: 150px; height: 150px; display: block;">
       <?php endif ?>
       <div class="form-group">
         <label>Product Name</label>
@@ -142,9 +147,9 @@ function randomString($n) {
         <label class="form-label">Categories</label>
         <select class="form-select" aria-label="Default select example" name="categories">
           <option selected>Open this select menu</option>
-          <?php foreach ($share as $value):?>
+          <?php foreach ($share as $value) { ?>
           <option value="<?php echo $value['category_id'] ?>"><?php echo $value['category_name'] ?></option>
-          <?php endforeach; ?>
+          <?php } ?>
         </select>
 
         </select>
@@ -161,6 +166,6 @@ function randomString($n) {
 <?php
 
 //sidebar include 
-include_once('../../headfoot/saidebar.php');
+// include_once('../../headfoot/saidebar.php');
 
 ?>

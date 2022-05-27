@@ -68,28 +68,39 @@ require_once("./header.php");
                     <div class="single-product card">
                       <div class="product-img ">
                         <a href="single-product.php?id=<?php echo $product_id; ?>">
-                          <img class="card-img" src="image/<?php echo $product_m_img ?>" style="height:200px" alt="product_img" />
+                          <img class="card-img" src="./admin/product/images/<?php echo $product_m_img ?>" style="height:200px" alt="product_img" />
                           <!-- <img class="card-img" src="./logo2.png" alt="product_img" /> -->
                         </a>
                         <div class="p_icon">
                         <a href="single-product.php?id=<?php echo $product_id; ?>">
-                      <i class="fa-regular fa-eye" style="font-size:1.5em; color :#707bfb;"></i>
+                      <i class="fa-regular fa-eye" style="font-size:1.5em;"></i>
                           </a>
                           <a href="#">
-                          <i class="fa-regular fa-heart" style="font-size:1.5em; color :#707bfb;"></i>
+                          <i class="fa-regular fa-heart" style="font-size:1.5em;"></i>
                           </a>
-                          
-                          <a href="category.php?action=add_to_cart&page=index&quantity=1&size=25&pcid=<?php echo $product_id; ?>&ucid=<?php echo $_SESSION['userLogin'] ?>">
-                      <i class="fa-solid fa-cart-arrow-down" style="font-size:1.5em; color :#707bfb;"></i>
-                          
+                          <form method="POST" action="" class = "d-inline">
+                    <input type="hidden" name="action" value="add_to_cart">
+                    <input type="hidden" name="page" value="index">
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="color" value="black">
+                    <input type="hidden" name="pcid" value="<?php echo $product_id; ?>">
+                    <input type="hidden" name="ucid" value="<?php echo $_SESSION['userLogin'] ?>">
+                    <input type="hidden" name="image" value="<?php echo $product_m_img ?>">
+                    <input type="hidden" name="name" value="<?php echo $product_name ?>">
+                    <input type="hidden" name="price" value="<?php echo $product_price ?>">
+                    <input type="hidden" name="addlog" value="addalert">
+                    <button type="submit" name="addlog" value="addalert"><i class="fa-solid fa-cart-arrow-down" style="font-size:1.5em;"></i></button>
+                    
+                  </form>
+                    
                         </div>
                       </div>
-                      <div class="product-btm">
+                      <div class="product-btm text-center">
                         <a href="#" class="d-block">
                           <h4><?php echo $product_name ?></h4>
                         </a>
-                        <div class="mt-3">
-                          <span class="mr-4"><?php echo $product_price . "JOD" ?></span>
+                        <div class="mt-3 text-center">
+                          <span class=""><?php echo $product_price . "JOD" ?></span>
                           <!-- <del><?php echo  "JOD" ?></del> -->
                         </div>
                       </div>

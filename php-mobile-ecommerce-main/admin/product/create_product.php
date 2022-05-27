@@ -18,24 +18,26 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $product_name = $_POST['product_name'];
     $product_description = $_POST['product_description'];
     $product_price = $_POST['product_price'];
+    $product_color = $_POST['color'];
     
 
 
     $image = $_FILES['image'] ?? null;
     $imagePath = '';
     if ($image) {
-        $imagePath = 'images/' . randomString(8) . $image['name'];
+        $imagePath = 'IMG-' . randomString(8) . $image['name'];
         
-        move_uploaded_file($image['tmp_name'], $imagePath);
+        move_uploaded_file($image['tmp_name'], "images/" . $imagePath);
     }
     
 
-    $statment = $pdo->prepare("INSERT INTO `products` (`product_name`, `product_description`, `product_m_img`, `product_price`, `category_id`)
-                VALUES (:product_name, :product_description, :image, :product_price, :category_id)");
+    $statment = $pdo->prepare("INSERT INTO `products` (`product_name`, `product_description`, `product_m_img`, `product_price`, `product_colors`, `category_id`)
+                VALUES (:product_name, :product_description, :image, :product_price, :product_colors, :category_id)");
     $statment->bindValue(':product_name', $product_name);
     $statment->bindValue(':product_description', $product_description);
     $statment->bindValue(':image', $imagePath);
     $statment->bindValue(':product_price', $product_price);
+    $statment->bindValue(':product_colors', $product_color);
     $statment->bindValue(':category_id', $share_id);
     
     $statment->execute();
@@ -92,6 +94,10 @@ function randomString($n)
       <div class="form-group">
         <label>Price</label>
         <input type="text" class="form-control" name="product_price">
+      </div>
+      <div class="form-group">
+        <label>Color</label>
+        <input type="text" class="form-control" name="color">
       </div>
       <div class="form-group">
         <label>Priduct Image</label>

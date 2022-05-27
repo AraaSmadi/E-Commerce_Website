@@ -48,7 +48,8 @@
                       <th scope="col">Email</th>
                       <th scope="col">Address </th>
                       <th scope="col">Phone</th>
-                      <th scope="col">Totel</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Details</th>
                   </tr>
               </thead>
               <tbody>
@@ -65,6 +66,13 @@
                           <td><?php echo   $value['order_address']; ?></td>
                           <td> <?php  echo '(+962)'.$value['phone_number'] ; ?></td>
                           <td><?php echo   $value['order_total_amount']; ?></td>
+                          <td>
+                              <form action = "order-history.php" method="POST">
+                                  <input type="hidden" name="order_date" value="<?php echo $value['order_date']; ?>"/>
+                                  <button type="submit" name="historysubmit" class="btn btn-primary">More Details</button>
+                
+                              </form>
+                          </td>
                             
                       </tr>     <?php
                      endforeach;

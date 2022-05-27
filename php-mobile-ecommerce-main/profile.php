@@ -54,7 +54,7 @@ if (isset($_POST['update'])) {
                 <div class="col-12 col-sm-auto mb-3">
                   <div class="mx-auto" style="width: 140px;">
                     <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                      <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;"><img class="card-img-top" src=" image/<?php  echo  $pro['user_img']?>"></span>
+                      <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;"><img class="card-img-top" src="./admin/users/images/<?php  echo  $pro['user_img']?>"></span>
  
                     </div>
                   </div>

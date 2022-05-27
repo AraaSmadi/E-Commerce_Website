@@ -1,6 +1,6 @@
 <?php 
 //header include
-include_once ('../headfoot/header.php');
+// include_once ('../headfoot/header.php');
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +22,14 @@ include_once ('../headfoot/header.php');
 </head>
 
 <body>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" style = "margin-left: 3.8%;">
+      Admin Dashboard
+    </a>
+  </div>
+</nav>
+
     <div class="row row-cols-1 row-cols-md-3 g-4" style="margin: 15px;  margin-left: 80px;">
         <div class="col" style = "width: 450px; height: 350px;">
             <div class="card h-100">
@@ -29,7 +37,7 @@ include_once ('../headfoot/header.php');
                 <div class="card-body">
                     <h5 class="card-title">Admin</h5>
                     <p class="card-text">This is a longer card with supporting text below as a natural lead-in to</p>
-                    <a href="./adminn/index.php" class="btn btn-success">Edit Product</a>
+                    <a href="./adminn/index.php" class="btn btn-success ">Edit Product</a>
                 </div>
             </div>
         </div>

@@ -19,9 +19,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $image = $_FILES['user_img'] ?? NULL;
     $imagePath = '';
     if ($image) {
-        $imagePath = 'images/' . randomString(8) . $image['name'];
+        $imagePath = 'IMG-' . randomString(8) . $image['name'];
         
-        move_uploaded_file($image['tmp_name'], $imagePath);
+        move_uploaded_file($image['tmp_name'],"images/" . $imagePath);
     }
        
     $statment = $pdo->prepare ("INSERT INTO `users` (`user_img`, `user_name`, `user_email`, `user_password`, `user_address`, `user_phone`)
